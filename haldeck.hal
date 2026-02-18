@@ -1,0 +1,52 @@
+# HalDeck demo
+loadusr -Wn haldeck /home/cnc/linuxcnc/configs/haldeck_demo/haldeck.py haldeck.ini
+
+net deckestopfb haldeck.page.1.key.00.in  halui.estop.is-activated
+
+loadrt or2 names=or20,or21,or22,or23
+addf or20 servo-thread
+addf or21 servo-thread
+addf or22 servo-thread
+addf or23 servo-thread
+
+loadrt updown count=1
+addf updown.0 servo-thread
+
+setp updown.0.min 1
+setp updown.0.max 10
+setp updown.0.clamp 1
+
+#up
+net in0u or20.in0 haldeck.page.1.key.10.out
+net in1u or20.in1 haldeck.page.2.key.10.out
+net in2u or21.in0 or20.out
+net in3u or21.in1 haldeck.page.3.key.10.out
+
+#down
+net in0d or22.in0 haldeck.page.2.key.00.out
+net in1d or22.in1 haldeck.page.3.key.00.out
+net in2d or23.in0 or22.out
+net in3d or23.in1 haldeck.page.4.key.00.out
+
+loadrt debounce cfg=2
+addf debounce.0 servo-thread
+
+setp debounce.0.delay 5
+
+net cntup    or21.out debounce.0.0.in
+net cntdown  or23.out debounce.0.1.in
+
+net dbcntup updown.0.countup  debounce.0.0.out
+net sbcntdown updown.0.countdown  debounce.0.1.out
+
+net page-select haldeck.page-select  updown.0.count
+
+net machine-is-on  haldeck.page.1.key.01.in  
+net mon haldeck.page.1.key.01.out halui.machine.on
+
+net x-is-homed haldeck.page.1.key.02.in 
+net homeall haldeck.page.1.key.02.out halui.home-all
+
+net drox haldeck.page.1.04.value  halui.axis.x.pos-relative
+net droy haldeck.page.1.09.value  halui.axis.y.pos-relative
+net droz haldeck.page.1.14.value  halui.axis.z.pos-relative
