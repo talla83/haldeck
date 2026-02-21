@@ -4,10 +4,12 @@ HalDeck provides StreamDeck support for LinuxCNC, allowing deck buttons to refle
 
 
 ## Installation
-
+    ```
     sudo apt install libhidapi-libusb0 python3-pip python3-pynput usbutils
+    ```
+    ```
     python3 -m pip install streamdeck  --user --break-system-packages
-
+    ```
 
 
 ## Configure
