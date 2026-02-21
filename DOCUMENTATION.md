@@ -1,42 +1,42 @@
-# HalDeck – Nutzerdokumentation
+# HalDeck – User Documentation
 
-## Übersicht
+## Overview
 
-HalDeck verbindet einen **Elgato Stream Deck** mit **LinuxCNC** über das HAL-System (Hardware Abstraction Layer). Die Konfiguration der Tasten erfolgt über eine INI-Datei (`haldeck.ini`).
-
----
-
-## Grundstruktur der Konfigurationsdatei
-
-Die Datei ist in **Sektionen** aufgeteilt. Jede Sektion beginnt mit einem Namen in eckigen Klammern `[...]`.
-
-```
-[General]           ← Allgemeine Einstellungen
-[page.1.key.00]     ← Taste 0 auf Seite 1
-[page.1.key.01]     ← Taste 1 auf Seite 1
-[page.2.key.00]     ← Taste 0 auf Seite 2
-[page.11]           ← Splash-Screen Seite 11
-```
-
-Kommentare beginnen mit `#`.
+HalDeck connects an **Elgato Stream Deck** to **LinuxCNC** via the HAL system (Hardware Abstraction Layer). Keys are configured through an INI file (`haldeck.ini`).
 
 ---
 
-## 1. Allgemeine Einstellungen `[General]`
+## Basic Structure of the Configuration File
+
+The file is divided into **sections**. Each section starts with a name in square brackets `[...]`.
+
+```
+[General]           ← General settings
+[page.1.key.00]     ← Key 0 on page 1
+[page.1.key.01]     ← Key 1 on page 1
+[page.2.key.00]     ← Key 0 on page 2
+[page.11]           ← Splash screen page 11
+```
+
+Comments start with `#`.
+
+---
+
+## 1. General Settings `[General]`
 
 ```ini
 [General]
-Verbose    = true    # Ausführliche Konsolenausgabe (true/false)
-Brightness = 50      # Helligkeit des Stream Decks (0–100)
+Verbose    = true    # Verbose console output (true/false)
+Brightness = 50      # Stream Deck brightness (0–100)
 ```
 
 ---
 
-## 2. Seiten und Tastennummern
+## 2. Pages and Key Numbers
 
-Das Stream Deck kann bis zu **10 normale Seiten** (Seiten 1–10) und bis zu **10 Splash-Screens** (Seiten 11–20) haben.
+The Stream Deck supports up to **10 normal pages** (pages 1–10) and up to **10 splash screens** (pages 11–20).
 
-Die Tasten eines Stream Decks Original (5×3) sind von links oben nach rechts unten nummeriert:
+Keys on a Stream Deck Original (5×3) are numbered from top-left to bottom-right:
 
 ```
 ┌─────┬─────┬─────┬─────┬─────┐
@@ -48,79 +48,79 @@ Die Tasten eines Stream Decks Original (5×3) sind von links oben nach rechts un
 └─────┴─────┴─────┴─────┴─────┘
 ```
 
-Der Sektionsname lautet immer: `[page.SEITE.key.NUMMER]`
+The section name always follows the pattern: `[page.PAGE.key.NUMBER]`
 
 ---
 
-## 3. Tastentypen (`Type`)
+## 3. Key Types (`Type`)
 
-Jede Taste bekommt einen Typ zugewiesen. Folgende Typen sind verfügbar:
+Every key must be assigned a type. The following types are available:
 
-| Typ             | Beschreibung |
+| Type            | Description |
 |-----------------|-------------|
-| `momentary`     | Standard-Taster mit HAL-Pins (Drücken/Loslassen) |
-| `keyboard`      | Simuliert einen Tastendruck auf der PC-Tastatur |
-| `display-float` | Zeigt einen HAL-Gleitkommawert (z. B. Achsposition) an |
-| `unused`        | Taste ist deaktiviert, kein HAL-Pin wird erstellt |
+| `momentary`     | Standard push button with HAL pins (press/release) |
+| `keyboard`      | Simulates a keyboard key press on the PC |
+| `display-float` | Displays a HAL floating-point value (e.g. axis position) |
+| `unused`        | Key is disabled, no HAL pin is created |
 
 ---
 
-## 4. Typ: `momentary` – Standard-Taster
+## 4. Type: `momentary` – Push Button
 
-Erzeugt HAL-Pins für Tastendrücke und LED-Status.
+Creates HAL pins for key presses and LED status.
 
-### Erzeugte HAL-Pins
+### Created HAL Pins
 
-| Pin | Richtung | Bedeutung |
-|-----|----------|-----------|
-| `haldeck.page.N.ALIAS.out` | Ausgang (BIT) | `true` solange Taste gedrückt |
-| `haldeck.page.N.ALIAS.in`  | Eingang (BIT) | Steuert LED/Highlight der Taste |
-| `haldeck.page.N.ALIAS.enable` | Eingang (BIT) | (optional) Deaktiviert die Taste wenn `false` |
+| Pin | Direction | Description |
+|-----|-----------|-------------|
+| `haldeck.page.N.ALIAS.out` | Output (BIT) | `true` while key is pressed |
+| `haldeck.page.N.ALIAS.in`  | Input (BIT)  | Controls LED/highlight of the key |
+| `haldeck.page.N.ALIAS.enable` | Input (BIT) | (optional) Disables the key when `false` |
 
-> **N** = Seitennummer, **ALIAS** = Wert von `PinAlias`
+> **N** = page number, **ALIAS** = value of `PinAlias`
 
-### Alle Parameter
+### All Parameters
 
 ```ini
 [page.1.key.00]
 Type             = momentary
 
-# HAL-Pin-Name (Standard: zweistellige Tastennummer, z.B. "00")
+# HAL pin name (default: two-digit key number, e.g. "00")
 PinAlias         = Estop
 
-# Bilder für die zwei Zustände der Taste
-InactiveImage    = power_red.png    # Bild wenn Taste NICHT gedrückt / Signal LOW
-ActiveImage      = power_green.png  # Bild wenn Taste gedrückt / Signal HIGH
+# Images for the two key states
+InactiveImage    = power_red.png    # Image when key is NOT pressed / signal LOW
+ActiveImage      = power_green.png  # Image when key is pressed / signal HIGH
 
-# ODER: nur ein Bild für beide Zustände
+# OR: single image for both states
 Image            = power_red.png
 
-# Hintergrundfarben (CSS-Farbnamen oder #RRGGBB)
+# Background colors (CSS color names or #RRGGBB)
 InactiveBackground = black
 ActiveBackground   = white
 
-# Textbeschriftung
+# Text labels
 InactiveLabel    = START
 ActiveLabel      = RUNNING
 
-# Schriftfarben
+# Font colors
 InactiveLabelColor = white
 ActiveLabelColor   = black
 
-# Schriftgröße in Punkten
+# Font size in points
 FontSize         = 20
 
-# Randabstand um das Bild in Pixeln: oben,rechts,unten,links
+# Image padding in pixels: top,right,bottom,left
 ImageMargins     = 0,0,0,0
 
-# Text über Bild zeichnen (true/false)
+# Draw text label on top of image (true/false)
 DrawLabelOnImage = false
 
-# Optionalen Enable-Pin erstellen (true/false)
+# Create optional enable pin (true/false)
 EnablePin        = false
 ```
 
-### Minimalbeispiel
+### Minimal Example
 
 ```ini
 [page.1.key.00]
@@ -130,7 +130,7 @@ InactiveImage = power_red.png
 ActiveImage   = power_green.png
 ```
 
-### Beispiel: Nur Text, keine Bilder
+### Example: Text Only, No Images
 
 ```ini
 [page.1.key.05]
@@ -140,27 +140,27 @@ InactiveBackground = #003300
 ActiveBackground   = #00ff00
 InactiveLabelColor = white
 ActiveLabelColor   = black
-InactiveLabel      = SPINDEL
-                     AUS
-ActiveLabel        = SPINDEL
-                     EIN
+InactiveLabel      = SPINDLE
+                     OFF
+ActiveLabel        = SPINDLE
+                     ON
 FontSize           = 16
 ```
 
-> **Tipp:** Mehrzeiliger Text wird durch Einrückung der Folgezeilen erreicht.
+> **Tip:** Multi-line text is achieved by indenting the continuation lines.
 
 ---
 
-## 5. Typ: `keyboard` – Tastatureingabe simulieren
+## 5. Type: `keyboard` – Keyboard Input Simulation
 
-Diese Taste simuliert einen Tastendruck auf der PC-Tastatur. Es werden **keine HAL-Pins** erstellt.
+This key simulates a keyboard key press on the PC. **No HAL pins** are created.
 
 ```ini
 [page.2.key.03]
 Type            = keyboard
-KeyboardKey     = Key.f5          # Sondertaste (pynput-Syntax)
-# ODER:
-KeyboardKey     = a               # Normales Zeichen
+KeyboardKey     = Key.f5          # Special key (pynput syntax)
+# OR:
+KeyboardKey     = a               # Regular character
 
 InactiveLabel   = F5
 ActiveLabel     = F5
@@ -168,65 +168,65 @@ InactiveBackground = black
 ActiveBackground   = white
 ```
 
-### Verfügbare Sondertasten (`Key.*`)
+### Available Special Keys (`Key.*`)
 
-Häufig genutzte Werte für `KeyboardKey`:
+Commonly used values for `KeyboardKey`:
 
-| Wert | Taste |
-|------|-------|
-| `Key.f1` … `Key.f12` | Funktionstasten F1–F12 |
-| `Key.space` | Leertaste |
+| Value | Key |
+|-------|-----|
+| `Key.f1` … `Key.f12` | Function keys F1–F12 |
+| `Key.space` | Space bar |
 | `Key.enter` | Enter |
 | `Key.esc`   | Escape |
-| `Key.home`, `Key.end` | Pos1, Ende |
-| `Key.page_up`, `Key.page_down` | Bild auf/ab |
+| `Key.home`, `Key.end` | Home, End |
+| `Key.page_up`, `Key.page_down` | Page Up, Page Down |
 
 ---
 
-## 6. Typ: `display-float` – Messwert anzeigen
+## 6. Type: `display-float` – Display a Measured Value
 
-Zeigt einen Gleitkommawert aus HAL an (z. B. Achsposition). Die Taste reagiert **nicht** auf Tastendruck.
+Displays a floating-point value from HAL (e.g. axis position). The key does **not** respond to button presses.
 
-### Erzeugte HAL-Pins
+### Created HAL Pins
 
-| Pin | Richtung | Bedeutung |
-|-----|----------|-----------|
-| `haldeck.page.N.ALIAS.value` | Eingang (FLOAT) | Anzuzeigender Wert |
+| Pin | Direction | Description |
+|-----|-----------|-------------|
+| `haldeck.page.N.ALIAS.value` | Input (FLOAT) | Value to display |
 
-### Alle Parameter
+### All Parameters
 
 ```ini
 [page.1.key.03]
 Type               = display-float
 PinAlias           = PosX
 
-# FloatPin = true aktiviert den .value-HAL-Pin
+# FloatPin = true enables the .value HAL pin
 FloatPin           = true
 
-# Python-Formatstring für die Darstellung
-Format             = {:.2f}        # 2 Dezimalstellen (Standard)
-# Format           = {:.3f}        # 3 Dezimalstellen
-# Format           = {:8.2f}       # 8 Zeichen breit, 2 Dezimalstellen
+# Python format string for display
+Format             = {:.2f}        # 2 decimal places (default)
+# Format           = {:.3f}        # 3 decimal places
+# Format           = {:8.2f}       # 8 characters wide, 2 decimal places
 
-# Dezimalkomma statt Dezimalpunkt (true = Komma)
+# Use decimal comma instead of decimal point (true = comma)
 DecimalComma       = true
 
-# Minimale Wertänderung für Update (verhindert Flackern)
+# Minimum value change to trigger an update (prevents flickering)
 MinStep            = 0.01
 
-# Minimales Zeitintervall zwischen Updates in Sekunden
+# Minimum time interval between updates in seconds
 MinInterval        = 0.1
 
-# Darstellung
+# Display styling
 InactiveBackground = black
 InactiveLabelColor = white
 FontSize           = 18
 
-# Text auf Bild zeichnen (bei display-float sinnvoll wenn Hintergrundbild genutzt wird)
+# Draw label on top of image (useful for display-float with a background image)
 DrawLabelOnImage   = true
 ```
 
-### Minimalbeispiel
+### Minimal Example
 
 ```ini
 [page.1.key.03]
@@ -241,9 +241,9 @@ InactiveLabelColor = white
 
 ---
 
-## 7. Typ: `unused` – Taste deaktivieren
+## 7. Type: `unused` – Disable a Key
 
-Deaktiviert eine Taste vollständig. Es werden keine HAL-Pins angelegt und die Taste ist dunkel.
+Completely disables a key. No HAL pins are created and the key remains dark.
 
 ```ini
 [page.2.key.04]
@@ -252,84 +252,84 @@ Type = unused
 
 ---
 
-## 8. Splash-Screens (Seiten 11–20)
+## 8. Splash Screens (Pages 11–20)
 
-Splash-Screens zeigen ein Vollbild-Bild über alle Tasten. Sie werden als eigenständige Sektion ohne Tastendefinitionen konfiguriert.
+Splash screens display a full-screen image across all keys. They are configured as a standalone section without individual key definitions.
 
 ```ini
 [page.11]
 Type              = splash
-SplashImage       = linuxcnc_2.gif    # Bilddatei aus dem assets/-Ordner
-SplashBackground  = black             # Hintergrundfarbe für Letterboxing
+SplashImage       = linuxcnc_2.gif    # Image file from the assets/ folder
+SplashBackground  = black             # Background color for letterboxing
 ```
 
-### Empfohlene Bildgrößen
+### Recommended Image Sizes
 
-| Stream Deck Modell        | Empfohlene Größe |
-|---------------------------|-------------------|
-| Original (5×3)            | 360 × 216 px      |
-| XL (8×4)                  | 576 × 384 px      |
-| Mini (3×2)                | 240 × 240 px      |
-| + (4×2)                   | 288 × 216 px      |
+| Stream Deck Model         | Recommended Size |
+|---------------------------|------------------|
+| Original (5×3)            | 360 × 216 px     |
+| XL (8×4)                  | 576 × 384 px     |
+| Mini (3×2)                | 240 × 240 px     |
+| + (4×2)                   | 288 × 216 px     |
 
-> Jede Bildgröße funktioniert – das Bild wird automatisch skaliert.
+> Any image size works – the image is scaled automatically.
 
 ---
 
-## 9. Seitenumschaltung über HAL
+## 9. Page Switching via HAL
 
-Die aktive Seite kann über HAL-Pins gesteuert werden:
+The active page can be controlled via HAL pins:
 
-| HAL-Pin                  | Typ  | Richtung | Beschreibung |
-|--------------------------|------|----------|--------------|
-| `haldeck.page-select`    | S32  | Eingang  | Gewünschte Seite setzen |
-| `haldeck.page-current`   | S32  | Ausgang  | Aktuell angezeigte Seite |
+| HAL Pin                  | Type | Direction | Description |
+|--------------------------|------|-----------|-------------|
+| `haldeck.page-select`    | S32  | Input     | Set the desired page |
+| `haldeck.page-current`   | S32  | Output    | Currently displayed page |
 
-### Beispiel in der HAL-Datei
+### Example in the HAL File
 
 ```hal
-# Seite 2 aktivieren wenn Taster gedrückt wird:
+# Switch to page 2 when a signal goes high:
 net page-switch haldeck.page-select <= your-signal-source
 ```
 
 ---
 
-## 10. Bilder und Assets
+## 10. Images and Assets
 
-Bildateien werden im Verzeichnis `assets/` im selben Ordner wie `haldeck.py` abgelegt. Unterstützte Formate: **PNG**, **GIF**, **JPG**.
+Image files are stored in the `assets/` directory in the same folder as `haldeck.py`. Supported formats: **PNG**, **GIF**, **JPG**.
 
-### Mitgelieferte Bilder
+### Included Images
 
-| Dateiname | Beschreibung |
-|-----------|-------------|
-| `power_red.png` / `power_green.png` | Power-Symbol rot/grün |
-| `ref_point_red.png` / `ref_point_green.png` | Referenzpunkt rot/grün |
+| Filename | Description |
+|----------|-------------|
+| `power_red.png` / `power_green.png` | Power symbol red/green |
+| `ref_point_red.png` / `ref_point_green.png` | Reference point red/green |
 | `play_green.png`, `play_white.png` | Play |
 | `pause_white.png` | Pause |
 | `stop_red.png`, `stop_white.png` | Stop |
-| `plus_grey.png` / `plus_white.png` | Plus-Symbol |
-| `minus_grey.png` / `minus_white.png` | Minus-Symbol |
-| `uparrow_white.png` / `downarrow_white.png` | Pfeile auf/ab |
-| `leftarrow_white.png` / `rightarrow_white.png` | Pfeile links/rechts |
-| `page_up.png` / `page_down.png` | Seite vor/zurück |
-| `turtle.png` / `rabbit.png` | Langsam/Schnell (Jog) |
-| `stepjog_grey.png` / `stepjog_white.png` | Schrittweiser Jog |
-| `home.png` | Home/Referenzfahrt |
-| `linuxcnc.gif` / `linuxcnc_2.gif` | LinuxCNC-Logo (Splash) |
+| `plus_grey.png` / `plus_white.png` | Plus symbol |
+| `minus_grey.png` / `minus_white.png` | Minus symbol |
+| `uparrow_white.png` / `downarrow_white.png` | Arrows up/down |
+| `leftarrow_white.png` / `rightarrow_white.png` | Arrows left/right |
+| `page_up.png` / `page_down.png` | Page forward/back |
+| `turtle.png` / `rabbit.png` | Slow/Fast (Jog) |
+| `stepjog_grey.png` / `stepjog_white.png` | Step jog |
+| `home.png` | Home/reference run |
+| `linuxcnc.gif` / `linuxcnc_2.gif` | LinuxCNC logo (Splash) |
 
 ---
 
-## 11. Rückwärtskompatibilität (Legacy-Format)
+## 11. Backward Compatibility (Legacy Format)
 
-Für Seite 1 kann auch das ältere Format ohne Seitenangabe verwendet werden. Das neue Format hat Vorrang.
+For page 1, the older format without a page number is also supported. The new format takes precedence.
 
 ```ini
-# Altes Format (nur für Seite 1):
+# Old format (page 1 only):
 [key.00]
 Type = momentary
 ...
 
-# Neues Format (empfohlen):
+# New format (recommended):
 [page.1.key.00]
 Type = momentary
 ...
@@ -337,14 +337,14 @@ Type = momentary
 
 ---
 
-## 12. Vollständiges Beispiel
+## 12. Complete Example
 
 ```ini
 [General]
 Verbose    = false
 Brightness = 70
 
-# ── Seite 1: Hauptsteuerung ──────────────────────────
+# ── Page 1: Main Control ──────────────────────────────
 
 [page.1.key.00]
 Type           = momentary
@@ -386,7 +386,7 @@ FontSize       = 18
 [page.1.key.14]
 Type = unused
 
-# ── Seite 11: Startbildschirm ────────────────────────
+# ── Page 11: Startup Screen ───────────────────────────
 
 [page.11]
 Type             = splash
@@ -396,21 +396,21 @@ SplashBackground = black
 
 ---
 
-## 13. HAL-Pin-Namensschema
+## 13. HAL Pin Naming Scheme
 
-Die automatisch erzeugten HAL-Pins folgen diesem Muster:
+All automatically created HAL pins follow this pattern:
 
 ```
-haldeck.page.<SEITE>.<ALIAS>.<SUFFIX>
+haldeck.page.<PAGE>.<ALIAS>.<SUFFIX>
 ```
 
-| Typ | Suffix | Datentyp | Richtung |
-|-----|--------|----------|----------|
-| momentary | `.out` | BIT | Ausgang |
-| momentary | `.in`  | BIT | Eingang |
-| momentary | `.enable` | BIT | Eingang |
-| display-float | `.value` | FLOAT | Eingang |
+| Type | Suffix | Data Type | Direction |
+|------|--------|-----------|-----------|
+| momentary | `.out` | BIT | Output |
+| momentary | `.in`  | BIT | Input |
+| momentary | `.enable` | BIT | Input |
+| display-float | `.value` | FLOAT | Input |
 
-**Beispiel** mit `PinAlias = Estop` auf Seite 1:
-- `haldeck.page.1.Estop.out` → wird `true` solange Taste gedrückt
-- `haldeck.page.1.Estop.in`  → steuert die LED-Anzeige der Taste
+**Example** with `PinAlias = Estop` on page 1:
+- `haldeck.page.1.Estop.out` → `true` while the key is pressed
+- `haldeck.page.1.Estop.in`  → controls the LED highlight of the key
