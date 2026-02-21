@@ -322,8 +322,8 @@ class Key:
         """
         Generate full HAL pin name
         
-        Format: deckard.page.N.ALIAS.name
-        Example: deckard.page.1.Estop.out
+        Format: haldeck.page.N.ALIAS.name
+        Example: haldeck.page.1.Estop.out
         
         Args:
             name: Pin suffix (e.g., 'in', 'out', 'enable', 'value')
@@ -766,7 +766,7 @@ def handle_key_event(deck, key_index, state):
 if __name__ == "__main__":
     # Parse command line arguments
     ap = argparse.ArgumentParser(
-        prog='deckard.py', 
+        prog='haldeck.py', 
         description='LinuxCNC StreamDeck support with Multi-Page, Images & Splash Screens'
     )
     ap.add_argument('configfile', help='Path to configuration INI file')
@@ -797,12 +797,12 @@ if __name__ == "__main__":
     HAL[hal_page_select_pin] = 1
     HAL[hal_page_current_pin] = 1
     
-    vprint("Created HAL pins: deckard.{} (IN) and deckard.{} (OUT)".format(
+    vprint("Created HAL pins: haldeck.{} (IN) and haldeck.{} (OUT)".format(
         hal_page_select_pin, hal_page_current_pin))
         
     # Enumerate and open StreamDeck devices
     decks = DeviceManager().enumerate()
-    vprint("Deckard found {} deck(s).\n".format(len(decks)))
+    vprint("HalDeck found {} deck(s).\n".format(len(decks)))
 
     for index, deck in enumerate(decks):
         # Skip non-visual devices (e.g., Stream Deck Pedal)
