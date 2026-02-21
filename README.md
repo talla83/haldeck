@@ -33,3 +33,10 @@ cd haldeck
 linuxcnc haldeck_demo.ini
 ```
 
+
+
+
+## Credits
+
+Thanks to all patrons for their support.
+www.patreon.com/Talla83
