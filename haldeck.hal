@@ -1,5 +1,7 @@
 # HalDeck demo
-loadusr -Wn haldeck /home/cnc/linuxcnc/configs/haldeck/haldeck.py haldeck.ini
+#loadusr -Wn haldeck /home/cnc/linuxcnc/configs/haldeck/haldeck.py haldeck.ini
+loadusr -Wn haldeck ./haldeck.py haldeck.ini
+
 
 loadrt or2 names=or20,or21,or22,or23
 addf or20 servo-thread
