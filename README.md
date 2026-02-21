@@ -23,7 +23,7 @@ python3 -m pip install streamdeck  --user --break-system-packages
 
 
 
-## run example / demo
+## Run example / demo
 
 ```
 cd linuxcnc
