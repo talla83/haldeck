@@ -25,16 +25,16 @@ python3 -m pip install streamdeck  --user --break-system-packages
 HalDeck is built around three key files:
 
 - haldeck.py
-    The main Python script.
-    It handles communication between the StreamDeck device and LinuxCNC/HAL and updates the button states based on HAL pins.
+    - The main Python script.
+    - It handles communication between the StreamDeck device and LinuxCNC/HAL and updates the button states based on HAL pins.
 
 - haldeck.ini
-    The configuration file for button layouts.
-    This file defines pages, button positions, icons, HAL signal assignments, and button behavior.
-    
+    - The configuration file for button layouts.
+    - This file defines pages, button positions, icons, HAL signal assignments, and button behavior.
+
 - haldeck.hal
-    The HAL configuration.  
-    It connects the button definitions from the ini file to real LinuxCNC HAL pins, allowing physical StreamDeck button presses to trigger machine functions.
+    - The HAL configuration.  
+    - It connects the button definitions from the ini file to real LinuxCNC HAL pins, allowing physical StreamDeck button presses to trigger machine functions.
 
 ## Configure
 
