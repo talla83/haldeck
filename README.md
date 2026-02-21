@@ -3,6 +3,10 @@
 HalDeck provides StreamDeck support for LinuxCNC, allowing deck buttons to reflect and control HAL pins. This allows creating responsive, tactile user interfaces for LinuxCNC machines.
 
 
+
+![HalDeck](images/001.jpg)
+
+
 ## Installation
     
 - some packages
