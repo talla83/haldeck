@@ -49,6 +49,8 @@ HalDeck is built around three key files:
 ```
 git clone https://github.com/talla83/haldeck.git haldeck
 ```
+
+```
 cd haldeck
 linuxcnc haldeck_demo.ini
 ```
