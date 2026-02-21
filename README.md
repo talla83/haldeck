@@ -12,7 +12,7 @@ This allows creating responsive, tactile user interfaces for LinuxCNC machines.
     
 - some packages
 ```
-sudo apt install libhidapi-libusb0 python3-pip python3-pynput usbutils
+sudo apt install libhidapi-libusb0 python3-pip python3-pynput usbutils git
 ```
 
 - python3 streamdeck library
@@ -48,6 +48,7 @@ HalDeck is built around three key files:
 
 ```
 git clone https://github.com/talla83/haldeck.git haldeck
+```
 cd haldeck
 linuxcnc haldeck_demo.ini
 ```
