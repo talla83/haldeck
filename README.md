@@ -24,7 +24,7 @@ python3 -m pip install streamdeck  --user --break-system-packages
 ## Configure
 
 
-    in work
+- in work
 
 
 
