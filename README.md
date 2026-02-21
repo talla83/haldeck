@@ -23,7 +23,7 @@ python3 -m pip install streamdeck  --user --break-system-packages
 - udev rule for streamdeck
 ```
 sudo tee /etc/udev/rules.d/10-streamdeck.rules << EOF
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="0fd9", GROUP="users", TAG+="uaccess"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0fd9", ATTR{power/control}="on", GROUP="users", TAG+="uaccess"
 EOF
 ```
 - Reload udev rules to ensure the new permissions take effect: 
