@@ -36,7 +36,9 @@ HalDeck is built around three key files:
     - The HAL configuration.  
     - It connects the button definitions from the ini file to real LinuxCNC HAL pins, allowing physical StreamDeck button presses to trigger machine functions.
 
-## Configure
+## Documentation
+
+![Documentation](DOKUMENTATION.md)
 
 
 - in work
