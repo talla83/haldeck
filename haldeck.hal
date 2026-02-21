@@ -1,8 +1,6 @@
 # HalDeck demo
 loadusr -Wn haldeck /home/cnc/linuxcnc/configs/haldeck/haldeck.py haldeck.ini
 
-net deckestopfb haldeck.page.1.key.00.in  halui.estop.is-activated
-
 loadrt or2 names=or20,or21,or22,or23
 addf or20 servo-thread
 addf or21 servo-thread
@@ -41,11 +39,14 @@ net sbcntdown updown.0.countdown  debounce.0.1.out
 
 net page-select haldeck.page-select  updown.0.count
 
-net machine-is-on  haldeck.page.1.key.01.in  
-net mon haldeck.page.1.key.01.out halui.machine.on
+net machine-is-on  haldeck.page.1.key.00.in  
+net mon haldeck.page.1.key.00.out halui.machine.on
 
-net x-is-homed haldeck.page.1.key.02.in 
-net homeall haldeck.page.1.key.02.out halui.home-all
+net x-is-homed haldeck.page.1.key.01.in 
+net y-is-homed haldeck.page.1.key.06.in 
+net z-is-homed haldeck.page.1.key.11.in 
+
+net homeall haldeck.page.1.key.01.out halui.home-all
 
 net drox haldeck.page.1.03.value  halui.axis.x.pos-relative
 net droy haldeck.page.1.08.value  halui.axis.y.pos-relative
