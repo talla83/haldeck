@@ -31,8 +31,6 @@ python3 -m pip install streamdeck  --user --break-system-packages
 ## Run example / demo
 
 ```
-cd linuxcnc
-cd configs
 git clone https://github.com/talla83/haldeck.git haldeck
 cd haldeck
 linuxcnc haldeck_demo.ini
