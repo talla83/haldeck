@@ -42,7 +42,6 @@ HalDeck is built around three key files:
 - in work
 
 
-
 ## Run example / demo
 
 ```
