@@ -1,5 +1,5 @@
 # HalDeck demo
-loadusr -Wn haldeck /home/cnc/linuxcnc/configs/haldeck_demo/haldeck.py haldeck.ini
+loadusr -Wn haldeck /home/cnc/linuxcnc/configs/haldeck/haldeck.py haldeck.ini
 
 net deckestopfb haldeck.page.1.key.00.in  halui.estop.is-activated
 
