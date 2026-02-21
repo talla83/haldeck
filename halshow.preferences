@@ -1,0 +1,18 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 1147x1101+342+137
+placeFrames 0.3
+set ::ratio 0.3
+set ::old_w_leftf 160
+set ::watchlist {
+    pin+haldeck.page.1.key.00.in
+    pin+haldeck.page.1.key.00.out
+    pin+haldeck.page.1.key.00.enable
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 0
+set ::autoSaveWatchlist 1
