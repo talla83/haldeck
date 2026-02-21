@@ -20,6 +20,19 @@ sudo apt install libhidapi-libusb0 python3-pip python3-pynput usbutils git
 python3 -m pip install streamdeck  --user --break-system-packages
 ```    
 
+- udev rule for streamdeck
+```
+sudo tee /etc/udev/rules.d/10-streamdeck.rules << EOF
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0fd9", GROUP="users", TAG+="uaccess"
+EOF
+```
+- Reload udev rules to ensure the new permissions take effect: 
+```
+sudo udevadm control --reload-rules
+```
+- Unplug and replug your StreamDeck device.
+
+
 ## Information
 
 HalDeck is built around three key files:
