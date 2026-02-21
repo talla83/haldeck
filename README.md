@@ -38,7 +38,7 @@ HalDeck is built around three key files:
 
 ## Documentation
 
-- ![Documentation](DOcUMENTATION.md)
+- Some documentation is available here: ![Documentation](DOcUMENTATION.md)
 
 
 
